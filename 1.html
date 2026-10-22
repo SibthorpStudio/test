@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测一测你最适合移民到哪个国家</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft Yahei", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            max-width: 650px;
+            width: 100%;
+            padding: 40px 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        .question {
+            display: none;
+        }
+
+        .question.active {
+            display: block;
+        }
+
+        .question h3 {
+            color: #444;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .option {
+            background: #f5f7fa;
+            padding: 15px 20px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .option:hover {
+            background: #e8f0fe;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: #e8f0fe;
+        }
+
+        .btn-group {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: space-between;
+        }
+
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .prev-btn {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .next-btn, .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .result-box {
+            display: none;
+            text-align: center;
+        }
+
+        .result-box h2 {
+            color: #667eea;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .result-desc {
+            color: #555;
+            line-height: 1.8;
+            font-size: 17px;
+            margin-bottom: 25px;
+        }
+
+        .restart-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #eee;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌍 移民国家适配度测试</h1>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+
+        <!-- 问题1 -->
+        <div class="question active" data-index="0">
+            <h3>1. 你最看重移民国家的哪一点？</h3>
+            <div class="option" data-score="canada">高福利和完善的医疗体系</div>
+            <div class="option" data-score="usa">经济发达，就业机会多</div>
+            <div class="option" data-score="newzealand">环境优美，生活节奏慢</div>
+            <div class="option" data-score="australia">教育资源顶尖，适合孩子成长</div>
+            <div class="option" data-score="japan">生活便利，文化相近易适应</div>
+            <div class="option" data-score="singapore">华人社会，中英文通用</div>
+        </div>
+
+        <!-- 问题2 -->
+        <div class="question" data-index="1">
+            <h3>2. 你能接受的气候类型是？</h3>
+            <div class="option" data-score="germany">四季分明，冬天可以看到雪</div>
+            <div class="option" data-score="france">阳光充足，温暖干燥</div>
+            <div class="option" data-score="ireland">温和湿润，全年温差不大</div>
+            <div class="option" data-score="thailand">热带气候，常年夏天</div>
+            <div class="option" data-score="japan">四季清晰，有樱花有红叶</div>
+            <div class="option" data-score="switzerland">高山湖泊，凉爽舒适</div>
+        </div>
+
+        <!-- 问题3 -->
+        <div class="question" data-index="2">
+            <h3>3. 你的语言能力更偏向于？</h3>
+            <div class="option" data-score="usa">英语流利，日常交流无障碍</div>
+            <div class="option" data-score="canada">只会基础英语，需要华人社区多</div>
+            <div class="option" data-score="germany">愿意学习小语种，适应新语言</div>
+            <div class="option" data-score="singapore">中文为主，当地官方就有中文</div>
+            <div class="option" data-score="japan">喜欢日漫日料，愿意学日语</div>
+            <div class="option" data-score="thailand">语言要求低，生活成本友好</div>
+        </div>
+
+        <!-- 问题4 -->
+        <div class="question" data-index="3">
+            <h3>4. 你移民的主要目的是？</h3>
+            <div class="option" data-score="portugal">享受生活，养老休闲</div>
+            <div class="option" data-score="singapore">事业发展，东南亚贸易枢纽</div>
+            <div class="option" data-score="ireland">陪伴家人，低税营商环境</div>
+            <div class="option" data-score="australia">子女教育，获得更好的升学路径</div>
+            <div class="option" data-score="thailand">低成本旅居，享受慢生活</div>
+            <div class="option" data-score="switzerland">高收入高福利，顶尖生活品质</div>
+        </div>
+
+        <!-- 问题5 -->
+        <div class="question" data-index="4">
+            <h3>5. 你对移民的预算预期是？</h3>
+            <div class="option" data-score="thailand">100万以内，低成本即可定居</div>
+            <div class="option" data-score="portugal">100-300万，购房即可拿身份</div>
+            <div class="option" data-score="japan">300-500万，经营管理签轻松获批</div>
+            <div class="option" data-score="germany">500万左右，蓝卡技术移民</div>
+            <div class="option" data-score="singapore">1000万以上，高端投资移民</div>
+            <div class="option" data-score="switzerland">预算充足，追求顶级身份</div>
+        </div>
+
+        <div class="btn-group">
+            <button class="prev-btn" id="prevBtn" style="visibility: hidden;">上一题</button>
+            <button class="next-btn" id="nextBtn">下一题</button>
+        </div>
+
+        <div class="result-box" id="resultBox">
+            <h2 id="countryName"></h2>
+            <p class="result-desc" id="countryDesc"></p>
+            <button class="restart-btn" id="restartBtn">重新测试</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = document.querySelectorAll('.question');
+        const progress = document.getElementById('progress');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const resultBox = document.getElementById('resultBox');
+        const countryName = document.getElementById('countryName');
+        const countryDesc = document.getElementById('countryDesc');
+        const restartBtn = document.getElementById('restartBtn');
+
+        let currentIndex = 0;
+        let scores = {};
+
+        // 完整结果库，覆盖所有新增国家
+        const results = {
+            canada: {
+                name: "加拿大 🇨🇦",
+                desc: "你非常适合移民加拿大！这里拥有全球顶尖的社会福利体系、完善的全民医疗、优美的自然环境，而且对华人非常友好，生活节奏舒适，是兼顾工作与生活的理想选择。"
+            },
+            usa: {
+                name: "美国 🇺🇸",
+                desc: "你最适合移民美国！这里汇聚了全球顶尖的科技企业和商业机会，多元的文化环境能满足你事业发展的全部需求，无论是创业还是就业都有无限可能。"
+            },
+            newzealand: {
+                name: "新西兰 🇳🇿",
+                desc: "你最适合移民新西兰！这里被称为世界最后一片净土，自然风光绝美，生活压力小，社会安全指数高，非常适合追求慢节奏、热爱自然的你。"
+            },
+            australia: {
+                name: "澳大利亚 🇦🇺",
+                desc: "你最适合移民澳大利亚！这里教育资源顶尖，华人社区成熟，气候舒适，非常适合有孩子的家庭定居，既能享受高质量生活，又能给子女优质的成长环境。"
+            },
+            japan: {
+                name: "日本 🇯🇵",
+                desc: "你最适合移民日本！和中国文化同源，时差只有1小时，生活便利度全球第一，医疗体系发达，距离国内近随时可以往返，非常适合喜欢东亚生活氛围的你。"
+            },
+            singapore: {
+                name: "新加坡 🇸🇬",
+                desc: "你最适合移民新加坡！作为全球知名的华人国家，中文是官方语言之一，教育水平全球顶尖，是东南亚的金融贸易枢纽，营商环境极佳，兼顾中西方优势。"
+            },
+            thailand: {
+                name: "泰国 🇹🇭",
+                desc: "你最适合移民泰国！生活成本极低，全年气候温暖，美食遍地，国际学校性价比极高，非常适合低成本旅居、养老或者陪读，是很多人的移民第一站。"
+            },
+            germany: {
+                name: "德国 🇩🇪",
+                desc: "你最适合移民德国！工业技术全球领先，全民免费教育和医疗，社会福利完善，工作稳定假期多，是欧洲生活品质和社会公平度最高的国家之一。"
+            },
+            france: {
+                name: "法国 🇫🇷",
+                desc: "你最适合移民法国！艺术氛围浓厚，假期多工作时间短，美食美酒文化丰富，南法阳光海岸气候宜人，非常适合热爱生活、追求浪漫氛围的你。"
+            },
+            switzerland: {
+                name: "瑞士 🇨🇭",
+                desc: "你最适合移民瑞士！全球人均收入最高的国家，风景如童话世界，社会秩序极其安全，顶尖的金融和医药行业，是追求顶级生活品质的最佳选择。"
+            },
+            ireland: {
+                name: "爱尔兰 🇮🇪",
+                desc: "你最适合移民爱尔兰！欧盟唯一的英语国家，企业税极低，是全球科技公司的欧洲总部聚集地，拿到身份可以自由在欧盟各国居住生活，教育体系和英国同源。"
+            },
+            portugal: {
+                name: "葡萄牙 🇵🇹",
+                desc: "你最适合移民葡萄牙！南欧阳光国度，生活节奏缓慢，物价低廉，购房即可拿到黄金身份，是低成本拿到欧盟身份、养老休闲的绝佳选择。"
+            }
+        };
+
+        // 初始化分数对象
+        Object.keys(results).forEach(key => scores[key] = 0);
+
+        // 更新进度条
+        function updateProgress() {
+            const percent = ((currentIndex + 1) / questions.length) * 100;
+            progress.style.width = percent + '%';
+        }
+
+        // 选项点击事件
+        questions.forEach(q => {
+            const options = q.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.addEventListener('click', () => {
+                    options.forEach(o => o.classList.remove('selected'));
+                    opt.classList.add('selected');
+                });
+            });
+        });
+
+        // 下一题
+        nextBtn.addEventListener('click', () => {
+            const currentQ = questions[currentIndex];
+            const selected = currentQ.querySelector('.option.selected');
+            
+            if (!selected) {
+                alert('请先选择一个答案哦');
+                return;
+            }
+
+            scores[selected.dataset.score]++;
+            currentIndex++;
+
+            prevBtn.style.visibility = 'visible';
+
+            if (currentIndex === questions.length - 1) {
+                nextBtn.innerText = '查看结果';
+            }
+
+            if (currentIndex >= questions.length) {
+                // 计算最高分的结果
+                let maxScore = 0;
+                let resultKey = 'canada';
+                for(let key in scores) {
+                    if(scores[key] > maxScore) {
+                        maxScore = scores[key];
+                        resultKey = key;
+                    }
+                }
+
+                // 显示结果
+                document.querySelector('.btn-group').style.display = 'none';
+                questions.forEach(q => q.style.display = 'none');
+                resultBox.style.display = 'block';
+                countryName.innerText = results[resultKey].name;
+                countryDesc.innerText = results[resultKey].desc;
+                return;
+            }
+
+            questions.forEach(q => q.classList.remove('active'));
+            questions[currentIndex].classList.add('active');
+            updateProgress();
+        });
+
+        // 上一题
+        prevBtn.addEventListener('click', () => {
+            // 重置所有分数
+            Object.keys(scores).forEach(key => scores[key] = 0);
+            currentIndex--;
+            nextBtn.innerText = '下一题';
+            
+            if (currentIndex === 0) {
+                prevBtn.style.visibility = 'hidden';
+            }
+
+            questions.forEach(q => q.classList.remove('active'));
+            questions[currentIndex].classList.add('active');
+            updateProgress();
+        });
+
+        // 重新开始
+        restartBtn.addEventListener('click', () => {
+            window.location.reload()
+            // currentIndex = 0;
+            // Object.keys(scores).forEach(key => scores[key] = 0);
+            // resultBox.style.display = 'none';
+            // document.querySelector('.btn-group').style.display = 'flex';
+            // questions.forEach(q => {
+            //     q.classList.remove('active');
+            //     q.querySelector('.option.selected')?.classList.remove('selected');
+            // });
+            // questions[0].classList.add('active');
+            // updateProgress();
+            // nextBtn.innerText = '下一题';
+            // prevBtn.style.visibility = 'hidden';
+        });
+
+        updateProgress();
+    </script>
+</body>
+</html>
